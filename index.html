@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hasan & Ashley - Our Love Story. Menghitung setiap detik kebersamaan kita.">
+    <title>Hasan ❤️ Ashley — Our Love Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="sparkles" id="sparkles"></div>
+    <div class="bg-overlay"></div>
+
+    <main class="container">
+        
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <p class="since-label">Since 26 September 2026</p>
+                <div class="names">
+                    <span class="name name-left">Hasan</span>
+                    <span class="heart-icon">
+                        <svg viewBox="0 0 64 64" class="heart-svg">
+                            <path d="M32 56S4 36 4 18C4 8 12 2 20 2c5.5 0 9.8 3 12 7 2.2-4 6.5-7 12-7 8 0 16 6 16 16C60 36 32 56 32 56z" 
+                                  fill="url(#heartGrad)" stroke="none"/>
+                            <defs>
+                                <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#ff6b9d"/>
+                                    <stop offset="100%" stop-color="#c44569"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </span>
+                    <span class="name name-right">Ashley</span>
+                </div>
+                <p class="tagline">Setiap detik bersamamu adalah keajaiban ✨</p>
+            </div>
+        </section>
+
+        <section class="timer-section" id="timer">
+            <h2 class="section-title">Kita Sudah Bersama Selama</h2>
+            <div class="timer-grid">
+                <div class="timer-card">
+                    <div class="timer-value" id="days">0</div>
+                    <div class="timer-label">Hari</div>
+                </div>
+                <div class="timer-separator">:</div>
+                <div class="timer-card">
+                    <div class="timer-value" id="hours">0</div>
+                    <div class="timer-label">Jam</div>
+                </div>
+                <div class="timer-separator">:</div>
+                <div class="timer-card">
+                    <div class="timer-value" id="minutes">0</div>
+                    <div class="timer-label">Menit</div>
+                </div>
+                <div class="timer-separator">:</div>
+                <div class="timer-card">
+                    <div class="timer-value" id="seconds">0</div>
+                    <div class="timer-label">Detik</div>
+                </div>
+            </div>
+            <div class="detailed-time">
+                <span id="totalWeeks">0</span> minggu &bull;
+                <span id="totalHours">0</span> jam &bull;
+                <span id="totalMinutes">0</span> menit &bull;
+                <span id="totalSeconds">0</span> detik bersama
+            </div>
+        </section>
+
+        <section class="love-section" id="love">
+            <div class="love-card">
+                <div class="love-icon">💌</div>
+                <h2 class="love-title">Untuk Ashley Tersayang</h2>
+                <p class="love-text">
+                    Meskipun perjalanan kita baru dimulai, setiap momen bersamamu terasa seperti mimpi yang tak ingin aku bangunkan.
+                    Terima kasih sudah menjadi alasan aku tersenyum setiap hari.
+                </p>
+                <p class="love-signature">— Dengan segenap cinta, Hasan 💕</p>
+            </div>
+        </section>
+
+        <section class="milestones-section" id="milestones">
+            <h2 class="section-title">Milestone Cinta Kita 💫</h2>
+            <div class="milestone-timeline">
+                <div class="milestone-item completed" data-days="1">
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content">
+                        <span class="milestone-day">Hari ke-1</span>
+                        <span class="milestone-text">Awal kisah kita dimulai 🌹</span>
+                    </div>
+                </div>
+                <div class="milestone-item" data-days="7">
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content">
+                        <span class="milestone-day">1 Minggu</span>
+                        <span class="milestone-text">Seminggu penuh kebahagiaan 🎉</span>
+                    </div>
+                </div>
+                <div class="milestone-item" data-days="30">
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content">
+                        <span class="milestone-day">1 Bulan</span>
+                        <span class="milestone-text">Sebulan penuh cinta 🌙</span>
+                    </div>
+                </div>
+                <div class="milestone-item" data-days="100">
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content">
+                        <span class="milestone-day">100 Hari</span>
+                        <span class="milestone-text">100 hari tak terlupakan 💎</span>
+                    </div>
+                </div>
+                <div class="milestone-item" data-days="365">
+                    <div class="milestone-dot"></div>
+                    <div class="milestone-content">
+                        <span class="milestone-day">1 Tahun</span>
+                        <span class="milestone-text">Anniversary pertama kita 👑</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quotes-section" id="quotes">
+            <h2 class="section-title">Kata-Kata Cinta 💭</h2>
+            <div class="quote-carousel">
+                <div class="quote-card active" id="quoteCard">
+                    <div class="quote-mark">"</div>
+                    <p class="quote-text" id="quoteText"></p>
+                    <div class="quote-dots" id="quoteDots"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ PHOTO GALLERY ═══════════ -->
+        <section class="gallery-section" id="gallery">
+            <h2 class="section-title">Galeri Kenangan Kita 📸</h2>
+            <p class="gallery-subtitle">Momen-momen indah yang kita abadikan bersama</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Photos will be populated by script.js -->
+            </div>
+        </section>
+
+        <!-- ═══════════ PHOTO LIGHTBOX ═══════════ -->
+        <div class="lightbox" id="lightbox">
+            <button class="lightbox-close" id="lightboxClose">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="lightbox-content">
+                <img id="lightboxImg" src="" alt="Photo">
+                <p class="lightbox-caption" id="lightboxCaption"></p>
+            </div>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+        </div>
+
+        <!-- ═══════════ MUSIC PLAYLIST SECTION ═══════════ -->
+        <section class="playlist-section" id="playlist">
+            <h2 class="section-title">Playlist Cinta Kita 🎶</h2>
+            <p class="gallery-subtitle">Lagu-lagu yang mengiringi kisah kita</p>
+            <div class="playlist-container" id="playlistContainer">
+                <!-- Songs will be populated by script.js -->
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-heart">
+                <span class="pulse-heart">❤️</span>
+            </div>
+            <p class="footer-text">Made with Hasan for <strong>Ashley</strong></p>
+            <p class="footer-date">Sejak 26 September 2026 — Selamanya 💍</p>
+        </footer>
+    </main>
+
+    <!-- ═══════════ STICKY MUSIC PLAYER BAR ═══════════ -->
+    <div class="music-player-bar" id="musicPlayerBar">
+        <div class="player-info">
+            <div class="player-album-art" id="playerAlbumArt">🎵</div>
+            <div class="player-details">
+                <span class="player-song-title" id="playerSongTitle">Pilih lagu...</span>
+                <span class="player-song-artist" id="playerSongArtist"></span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" id="playerPrev" title="Previous">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+            </button>
+            <button class="player-btn player-btn-main" id="playerPlayPause" title="Play/Pause">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button class="player-btn" id="playerNext" title="Next">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+        </div>
+        <div class="player-progress-section">
+            <span class="player-time" id="playerCurrentTime">0:00</span>
+            <div class="player-progress-bar" id="playerProgressBar">
+                <div class="player-progress-fill" id="playerProgressFill"></div>
+            </div>
+            <span class="player-time" id="playerDuration">0:00</span>
+        </div>
+        <div class="player-volume-section">
+            <button class="player-btn player-btn-sm" id="playerVolumeBtn" title="Volume">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </button>
+            <div class="player-volume-bar" id="playerVolumeBar">
+                <div class="player-volume-fill" id="playerVolumeFill" style="width:80%"></div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <button class="scroll-top" id="scrollTop" title="Kembali ke atas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
