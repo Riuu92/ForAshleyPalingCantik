@@ -48,7 +48,28 @@ const PLAYLIST = [
     // { title: 'A Thousand Years', artist: 'Christina Perri', src: 'music/a-thousand-years.mp3' },
     { title: 'All of Me (cover)', artist: 'John Legend', src: 'music/all-of-me.mp3' },
     { title: 'Thinking Out Loud (cover)', artist: 'Ed Sheeran', src: 'music/thinking-out-loud.mp3' },
-    { title: 'kesayanganku', artist: 'Al-Ghazali', src: 'music/kesayanganku.mp3' },
+    { title: 'Kesayanganku', artist: 'Al-Ghazali', src: 'music/kesayanganku.mp3' },
+    { title: 'ASBSK (Aku Sayang Banget Sama Kamu) Cover by windyyy', artist: 'Souqy', src: 'music/asbsk.mp3' },
+];
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  VIDEO — Taruh file video di folder videos/                  ║
+// ║  Lalu tambahkan datanya di array VIDEOS di bawah ini.        ║
+// ║                                                              ║
+// ║  Format:                                                     ║
+// ║  {                                                           ║
+// ║    src: 'videos/nama-file.mp4',                              ║
+// ║    caption: 'Keterangan video',                              ║
+// ║    date: 'Tanggal (opsional)'                                ║
+// ║  }                                                           ║
+// ║                                                              ║
+// ║  Contoh (hapus // di depan untuk mengaktifkan):              ║
+// ╚══════════════════════════════════════════════════════════════╝
+const VIDEOS = [
+    { src: 'videos/vid1.mp4', caption: 'Video random Ashley', date: "1 Okt 2026" },
+    // { src: 'videos/momen-pertama.mp4', caption: 'Momen pertama kita 💕', date: '26 Sep 2026' },
+    // { src: 'videos/jalan-sore.mp4', caption: 'Jalan-jalan sore berdua 🌅', date: '28 Sep 2026' },
+    // { src: 'videos/kenangan-indah.mp4', caption: 'Kenangan yang tak terlupakan ✨', date: '30 Sep 2026' },
 ];
 
 
@@ -229,7 +250,7 @@ function nextQuote() {
 // ── Scroll Reveal ──────────────────────────────
 function initScrollReveal() {
     const sections = document.querySelectorAll(
-        '.timer-section, .love-section, .milestones-section, .quotes-section, .gallery-section, .playlist-section'
+        '.timer-section, .love-section, .milestones-section, .quotes-section, .gallery-section, .video-section, .playlist-section'
     );
 
     const observer = new IntersectionObserver((entries) => {
@@ -645,8 +666,151 @@ function initMusicPlayer() {
 }
 
 
+// ═══════════════════════════════════════════════════════════════
+//  VIDEO GALLERY
+//  Cara pakai:
+//  1. Taruh file video (mp4/webm) ke folder videos/
+//  2. Tambahkan entry di array VIDEOS di atas
+// ═══════════════════════════════════════════════════════════════
+function initVideoGallery() {
+    const grid = document.getElementById('videoGrid');
+
+    if (VIDEOS.length === 0) {
+        grid.innerHTML = `
+            <div class="video-empty">
+                <div class="video-empty-icon">🎬</div>
+                <p class="video-empty-text">Belum ada video kenangan...</p>
+                <p class="video-empty-hint">Taruh video di folder videos/ lalu daftarkan di script.js</p>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = '';
+    VIDEOS.forEach((video, index) => {
+        const item = document.createElement('div');
+        item.classList.add('video-item');
+        item.innerHTML = `
+            <video src="${video.src}" preload="metadata" muted></video>
+            <div class="video-play-overlay">
+                <div class="video-play-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+            </div>
+            <div class="video-info">
+                <span class="video-info-title">${video.caption || 'Video kenangan'}</span>
+                ${video.date ? `<span class="video-info-date">${video.date}</span>` : ''}
+            </div>
+        `;
+        item.addEventListener('click', () => openVideoLightbox(index));
+        grid.appendChild(item);
+    });
+}
+
+function openVideoLightbox(index) {
+    const lightbox = document.getElementById('videoLightbox');
+    const player = document.getElementById('videoLightboxPlayer');
+    const caption = document.getElementById('videoLightboxCaption');
+
+    player.src = VIDEOS[index].src;
+    caption.textContent = VIDEOS[index].caption || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    player.play().catch(() => {});
+}
+
+function closeVideoLightbox() {
+    const lightbox = document.getElementById('videoLightbox');
+    const player = document.getElementById('videoLightboxPlayer');
+    player.pause();
+    player.currentTime = 0;
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function initVideoLightbox() {
+    document.getElementById('videoLightboxClose').addEventListener('click', closeVideoLightbox);
+
+    document.getElementById('videoLightbox').addEventListener('click', (e) => {
+        if (e.target.id === 'videoLightbox') closeVideoLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        const lightbox = document.getElementById('videoLightbox');
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeVideoLightbox();
+    });
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  THEME SWITCHER
+//  3 mode: romantic (default), sunset (senja), night (malam)
+// ═══════════════════════════════════════════════════════════════
+function initThemeSwitcher() {
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const panel = document.getElementById('themePanel');
+    const options = document.querySelectorAll('.theme-option');
+
+    // Load saved theme from localStorage
+    const savedTheme = localStorage.getItem('hasan-ashley-theme') || 'romantic';
+    setTheme(savedTheme);
+
+    // Toggle panel
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        panel.classList.toggle('open');
+    });
+
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.theme-switcher')) {
+            panel.classList.remove('open');
+        }
+    });
+
+    // Theme option buttons
+    options.forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const theme = option.dataset.theme;
+            setTheme(theme);
+            localStorage.setItem('hasan-ashley-theme', theme);
+
+            // Close panel after short delay
+            setTimeout(() => {
+                panel.classList.remove('open');
+            }, 300);
+        });
+    });
+}
+
+function setTheme(theme) {
+    const body = document.body;
+    body.setAttribute('data-theme', theme);
+
+    // Update active state on buttons
+    const options = document.querySelectorAll('.theme-option');
+    options.forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.theme === theme);
+    });
+
+    // Update toggle button icon
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const icons = {
+        romantic: `<svg class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`,
+        sunset: `<svg class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
+        night: `<svg class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
+    };
+    toggleBtn.innerHTML = icons[theme] || icons.romantic;
+}
+
+
 // ── Initialize Everything ──────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme switcher (init first so theme applies immediately)
+    initThemeSwitcher();
+
     // Start timer
     updateTimer();
     setInterval(updateTimer, 1000);
@@ -663,6 +827,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photo Gallery
     initGallery();
     initLightbox();
+
+    // Video Gallery
+    initVideoGallery();
+    initVideoLightbox();
 
     // Music Player
     initPlaylist();

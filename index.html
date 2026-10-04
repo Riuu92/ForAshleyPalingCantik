@@ -10,10 +10,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="romantic">
     <div class="floating-hearts" id="floatingHearts"></div>
     <div class="sparkles" id="sparkles"></div>
     <div class="bg-overlay"></div>
+
+    <!-- ═══════════ THEME SWITCHER ═══════════ -->
+    <div class="theme-switcher" id="themeSwitcher">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Ganti Suasana">
+            <svg class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+        </button>
+        <div class="theme-panel" id="themePanel">
+            <p class="theme-panel-title">Pilih Suasana ✨</p>
+            <button class="theme-option active" data-theme="romantic" id="themeRomantic">
+                <span class="theme-option-icon">🌸</span>
+                <span class="theme-option-label">Romantis</span>
+                <span class="theme-option-desc">Pink & ungu yang lembut</span>
+            </button>
+            <button class="theme-option" data-theme="sunset" id="themeSunset">
+                <span class="theme-option-icon">🌅</span>
+                <span class="theme-option-label">Senja</span>
+                <span class="theme-option-desc">Hangat bagai senja berdua</span>
+            </button>
+            <button class="theme-option" data-theme="night" id="themeNight">
+                <span class="theme-option-icon">🌙</span>
+                <span class="theme-option-label">Malam</span>
+                <span class="theme-option-desc">Romantis di bawah bintang</span>
+            </button>
+        </div>
+    </div>
 
     <main class="container">
         
@@ -157,6 +185,26 @@
             <button class="lightbox-nav lightbox-next" id="lightboxNext">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
+        </div>
+
+        <!-- ═══════════ VIDEO GALLERY SECTION ═══════════ -->
+        <section class="video-section" id="videos">
+            <h2 class="section-title">Video Kenangan Kita 🎬</h2>
+            <p class="gallery-subtitle">Momen-momen spesial yang terekam indah</p>
+            <div class="video-grid" id="videoGrid">
+                <!-- Videos will be populated by script.js -->
+            </div>
+        </section>
+
+        <!-- ═══════════ VIDEO LIGHTBOX ═══════════ -->
+        <div class="video-lightbox" id="videoLightbox">
+            <button class="video-lightbox-close" id="videoLightboxClose">&times;</button>
+            <div class="video-lightbox-content">
+                <video id="videoLightboxPlayer" controls playsinline>
+                    <source src="" type="video/mp4">
+                </video>
+                <p class="video-lightbox-caption" id="videoLightboxCaption"></p>
+            </div>
         </div>
 
         <!-- ═══════════ MUSIC PLAYLIST SECTION ═══════════ -->
