@@ -15,6 +15,35 @@
     <div class="sparkles" id="sparkles"></div>
     <div class="bg-overlay"></div>
 
+    <div class="falling-petals" id="fallingPetals" aria-hidden="true"></div>
+
+    <!-- ═══════════ SUN (tema Senja) ═══════════ -->
+    <div class="sky-body sun" id="sun" aria-hidden="true">
+        <div class="sun-rays"></div>
+        <div class="sun-core"></div>
+    </div>
+
+    <!-- ═══════════ MOON (tema Malam) ═══════════ -->
+    <div class="sky-body moon" id="moon" aria-hidden="true">
+        <svg viewBox="0 0 120 120" class="moon-svg">
+            <defs>
+                <radialGradient id="moonGrad" cx="35%" cy="35%" r="80%">
+                    <stop offset="0%" stop-color="#fffbe8"/>
+                    <stop offset="60%" stop-color="#f3e6c4"/>
+                    <stop offset="100%" stop-color="#d9c79a"/>
+                </radialGradient>
+                <mask id="crescentMask">
+                    <rect width="120" height="120" fill="white"/>
+                    <circle cx="78" cy="48" r="38" fill="black"/>
+                </mask>
+            </defs>
+            <circle cx="52" cy="62" r="42" fill="url(#moonGrad)" mask="url(#crescentMask)"/>
+        </svg>
+        <span class="moon-star ms1">✦</span>
+        <span class="moon-star ms2">✦</span>
+        <span class="moon-star ms3">♡</span>
+    </div>
+
     <!-- ═══════════ THEME SWITCHER ═══════════ -->
     <div class="theme-switcher" id="themeSwitcher">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Ganti Suasana">
@@ -68,8 +97,9 @@
             </div>
         </section>
 
+        <!-- ═══════════ COUNT UP TIMER ═══════════ -->
         <section class="timer-section" id="timer">
-            <h2 class="section-title">Kita Sudah Bersama Selama</h2>
+            <h2 class="section-title">Kita Sudah Bersama Selama 💕</h2>
             <div class="timer-grid">
                 <div class="timer-card">
                     <div class="timer-value" id="days">0</div>
@@ -99,18 +129,115 @@
             </div>
         </section>
 
-        <section class="love-section" id="love">
-            <div class="love-card">
-                <div class="love-icon">💌</div>
-                <h2 class="love-title">Untuk Ashley Tersayang</h2>
-                <p class="love-text">
-                    Meskipun perjalanan kita baru dimulai, setiap momen bersamamu terasa seperti mimpi yang tak ingin aku bangunkan.
-                    Terima kasih sudah menjadi alasan aku tersenyum setiap hari.
-                </p>
-                <p class="love-signature">— Dengan segenap cinta, Hasan 💕</p>
+        <!-- ═══════════ 6. COUNTDOWN MENUJU HARI SPESIAL ═══════════ -->
+        <section class="countdown-section" id="countdown">
+            <div class="section-badge">Upcoming Milestone ⏳</div>
+            <h2 class="section-title">Hitung Mundur Hari Spesial ⏳✨</h2>
+            <p class="section-subtitle">Menanti setiap detik momen berharga berikutnya bersama Ashley</p>
+            
+            <div class="countdown-selector">
+                <button class="countdown-tab active" data-target="2026-10-26T00:00:00+08:00" data-title="1 Bulan Jadian 🌹" data-msg="Satu bulan penuh tawa, cinta, dan debaran manis bersamamu!">1 Bulan Jadian 🌹</button>
+                <button class="countdown-tab" data-target="2027-01-04T00:00:00+08:00" data-title="100 Hari Bersama 💎" data-msg="100 hari bukti bahwa cintaku semakin bertambah setiap detiknya!">100 Hari Bersama 💎</button>
+                <button class="countdown-tab" data-target="2027-09-26T00:00:00+08:00" data-title="1st Anniversary 👑" data-msg="Satu tahun pertama dari selamanya yang ingin ku lalui bersamamu!">1st Anniversary 👑</button>
+                <button class="countdown-tab" data-target="2027-02-14T00:00:00+08:00" data-title="Valentine's Day 🍫" data-msg="Hari kasih sayang paling spesial karena aku memilikimu!">Valentine's Day 🍫</button>
+            </div>
+
+            <div class="countdown-display-card">
+                <div class="countdown-header-info">
+                    <span class="countdown-icon-pulse">✨</span>
+                    <h3 class="countdown-event-title" id="countdownEventTitle">Menuju 1 Bulan Jadian 🌹</h3>
+                </div>
+                <div class="countdown-grid">
+                    <div class="countdown-card">
+                        <span class="countdown-number" id="cdDays">00</span>
+                        <span class="countdown-label">Hari</span>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-card">
+                        <span class="countdown-number" id="cdHours">00</span>
+                        <span class="countdown-label">Jam</span>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-card">
+                        <span class="countdown-number" id="cdMinutes">00</span>
+                        <span class="countdown-label">Menit</span>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-card">
+                        <span class="countdown-number" id="cdSeconds">00</span>
+                        <span class="countdown-label">Detik</span>
+                    </div>
+                </div>
+                <p class="countdown-message" id="countdownMessage">Satu bulan penuh tawa, cinta, dan debaran manis bersamamu!</p>
             </div>
         </section>
 
+        <!-- ═══════════ 1. AMPLOP SURAT INTERAKTIF ═══════════ -->
+        <section class="love-section" id="love">
+            <div class="section-badge">Pesan Rahasia 💌</div>
+            <h2 class="section-title">Amplop Surat Cinta untuk Ashley</h2>
+            <p class="section-subtitle">Sentuh amplop di bawah ini untuk membuka isi surat cinta dari Hasan</p>
+
+            <div class="envelope-container" id="envelopeContainer">
+                <div class="envelope-box" id="envelopeBox">
+                    <!-- Flap top -->
+                    <div class="envelope-top-flap" id="envelopeFlap"></div>
+                    
+                    <!-- Paper letter that slides out -->
+                    <div class="envelope-letter" id="envelopeLetter">
+                        <div class="letter-texture"></div>
+                        <div class="letter-inner-content">
+                            <div class="letter-watermark">H & A</div>
+                            <div class="letter-header-row">
+                                <span class="letter-badge">Untuk Ashley Sayang 🌸</span>
+                                <span class="letter-date-stamp">26 September 2026</span>
+                            </div>
+                            <h3 class="letter-title">Dearest Ashley,</h3>
+                            <p class="letter-paragraph">
+                                Meskipun perjalanan kita baru dimulai, setiap momen bersamamu terasa seperti mimpi indah yang tak pernah ingin aku sudahi.
+                            </p>
+                            <p class="letter-paragraph">
+                                Terima kasih sudah menjadi pelangi di setiap hariku, menghadirkan tawa termanis, dan mengajariku arti ketulusan yang sesungguhnya. Aku bersyukur menemukanmu di semesta yang luas ini.
+                            </p>
+                            <p class="letter-paragraph highlight-quote">
+                                "Bersamamu, satu detik pun tak ingin kulewatkan tanpa bersyukur bahwa kamu milikku."
+                            </p>
+                            <div class="letter-footer-row">
+                                <span class="letter-promise">Janji cinta untuk selamanya 💍</span>
+                                <span class="letter-signature-text">— Dengan segenap cinta, Hasan 💕</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Front Pocket & Wax Seal -->
+                    <div class="envelope-pocket">
+                        <div class="envelope-pocket-lines"></div>
+                        <div class="envelope-stamp-badge">
+                            <span class="stamp-icon">🕊️</span>
+                            <span class="stamp-text">LOVE AIR MAIL</span>
+                        </div>
+                        <div class="envelope-address-card">
+                            <span class="to-label">Kepada:</span>
+                            <h4 class="recipient-name">For Ashley 💗</h4>
+                            <p class="address-desc">Wanita paling manis di seluruh semesta ✨</p>
+                        </div>
+                        <div class="envelope-wax-seal" id="waxSeal" title="Klik untuk membuka!">
+                            <span class="seal-icon">💌</span>
+                            <span class="seal-pulse"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="envelope-btn-wrap">
+                    <button class="open-letter-action-btn" id="openLetterBtn">
+                        <span class="envelope-btn-icon">💌</span>
+                        <span class="envelope-btn-text" id="openLetterBtnText">Open Letter (Buka Surat)</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ MILESTONES SECTION ═══════════ -->
         <section class="milestones-section" id="milestones">
             <h2 class="section-title">Milestone Cinta Kita 💫</h2>
             <div class="milestone-timeline">
@@ -152,6 +279,7 @@
             </div>
         </section>
 
+        <!-- ═══════════ QUOTES SECTION ═══════════ -->
         <section class="quotes-section" id="quotes">
             <h2 class="section-title">Kata-Kata Cinta 💭</h2>
             <div class="quote-carousel">
@@ -163,12 +291,15 @@
             </div>
         </section>
 
-        <!-- ═══════════ PHOTO GALLERY ═══════════ -->
+        <!-- ═══════════ 2. GALERI KENANGAN ALA SCRAPBOOK ═══════════ -->
         <section class="gallery-section" id="gallery">
-            <h2 class="section-title">Galeri Kenangan Kita 📸</h2>
-            <p class="gallery-subtitle">Momen-momen indah yang kita abadikan bersama</p>
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- Photos will be populated by script.js -->
+            <div class="section-badge">Memories Album 📸</div>
+            <h2 class="section-title">Galeri Kenangan Ala Scrapbook 📸🎀</h2>
+            <p class="gallery-subtitle">Potret kenangan dalam bingkai Polaroid, stiker manis & catatan cinta kita</p>
+            <div class="scrapbook-board" id="scrapbookBoard">
+                <div class="scrapbook-grid" id="galleryGrid">
+                    <!-- Polaroid cards will be populated by script.js -->
+                </div>
             </div>
         </section>
 
@@ -207,12 +338,154 @@
             </div>
         </div>
 
-        <!-- ═══════════ MUSIC PLAYLIST SECTION ═══════════ -->
+        <!-- ═══════════ 4. PEMUTAR MUSIK DENGAN PIRINGAN HITAM & PLAYLIST ═══════════ -->
         <section class="playlist-section" id="playlist">
-            <h2 class="section-title">Playlist Cinta Kita 🎶</h2>
-            <p class="gallery-subtitle">Lagu-lagu yang mengiringi kisah kita</p>
+            <div class="section-badge">Romantic Melodies 🎵</div>
+            <h2 class="section-title">Pemutar Musik Piringan Hitam 🎶</h2>
+            <p class="gallery-subtitle">Putar lagu kesayangan untuk mengiringi waktu romantismu</p>
+            
+            <!-- Mini Vinyl Turntable Player -->
+            <div class="turntable-container" id="turntablePlayer">
+                <div class="turntable-body">
+                    <!-- Floating musical notes container -->
+                    <div class="turntable-notes" id="turntableNotes"></div>
+                    
+                    <div class="turntable-deck">
+                        <!-- Vinyl Record Disc -->
+                        <div class="vinyl-disc-wrap">
+                            <div class="vinyl-disc" id="vinylDisc">
+                                <div class="vinyl-groove g1"></div>
+                                <div class="vinyl-groove g2"></div>
+                                <div class="vinyl-groove g3"></div>
+                                <div class="vinyl-center-label" id="vinylCenterLabel">
+                                    <span class="vinyl-center-emoji" id="vinylCenterEmoji">🎵</span>
+                                    <span class="vinyl-center-text" id="vinylCenterTitle">Love Track</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Turntable Tonearm -->
+                        <div class="turntable-tonearm" id="turntableTonearm">
+                            <div class="tonearm-base"></div>
+                            <div class="tonearm-rod"></div>
+                            <div class="tonearm-head"></div>
+                        </div>
+                    </div>
+
+                    <!-- Player Controls & Info -->
+                    <div class="turntable-info-panel">
+                        <div class="turntable-now-playing">
+                            <span class="turntable-status-tag" id="turntableStatusTag">Siap Diputar 💿</span>
+                            <h3 class="turntable-song-title" id="turntableSongTitle">Pilih lagu di bawah atau klik Play</h3>
+                            <p class="turntable-song-artist" id="turntableSongArtist">Hasan & Ashley Love Song</p>
+                        </div>
+
+                        <!-- Main Play Button -->
+                        <div class="turntable-actions">
+                            <button class="turntable-btn tt-prev" id="ttPrevBtn" title="Lagu Sebelumnya">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                            </button>
+                            <button class="turntable-main-play-btn" id="ttPlayPauseBtn" title="Putar Musik">
+                                <svg class="tt-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                <svg class="tt-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                            </button>
+                            <button class="turntable-btn tt-next" id="ttNextBtn" title="Lagu Berikutnya">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="turntable-progress-row">
+                            <span class="tt-time" id="ttCurrentTime">0:00</span>
+                            <div class="tt-progress-track" id="ttProgressTrack">
+                                <div class="tt-progress-bar" id="ttProgressBar"></div>
+                            </div>
+                            <span class="tt-time" id="ttDuration">0:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Song List -->
             <div class="playlist-container" id="playlistContainer">
                 <!-- Songs will be populated by script.js -->
+            </div>
+        </section>
+
+        <!-- ═══════════ 5. MINI KUIS KHUSUS ASHLEY ═══════════ -->
+        <section class="quiz-section" id="quiz">
+            <div class="section-badge">Fun Interactive Game 🥰</div>
+            <h2 class="section-title">Mini Kuis Khusus Ashley 🥰✨</h2>
+            <p class="section-subtitle">Seberapa kenal kamu dengan kisah kita? Ayo uji ingatan dan cintamu di sini!</p>
+
+            <div class="quiz-container" id="quizContainer">
+                <div class="quiz-card" id="quizCard">
+                    <!-- Header with progress bar -->
+                    <div class="quiz-header">
+                        <div class="quiz-step-info">
+                            <span class="quiz-step-badge" id="quizStepBadge">Pertanyaan 1 dari 5</span>
+                            <span class="quiz-score-badge" id="quizScoreBadge">Skor: 0 💕</span>
+                        </div>
+                        <div class="quiz-progress-bar-wrap">
+                            <div class="quiz-progress-fill" id="quizProgressFill" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Content -->
+                    <div class="quiz-body" id="quizBody">
+                        <div class="quiz-question-icon" id="quizQuestionIcon">💖</div>
+                        <h3 class="quiz-question-title" id="quizQuestionTitle">Kapan tanggal jadian resmi kita berdua?</h3>
+                        <div class="quiz-options-list" id="quizOptionsList">
+                            <!-- Populated by script.js -->
+                        </div>
+                    </div>
+
+                    <!-- Feedback message -->
+                    <div class="quiz-feedback" id="quizFeedback"></div>
+
+                    <!-- Next Question Button -->
+                    <div class="quiz-footer">
+                        <button class="quiz-next-btn" id="quizNextBtn" style="display: none;">
+                            Pertanyaan Selanjutnya ➔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Card (Hidden by default) -->
+                <div class="quiz-result-card" id="quizResultCard" style="display: none;">
+                    <div class="quiz-result-header">
+                        <span class="quiz-result-trophy">👑</span>
+                        <h3 class="quiz-result-title">Ashley, Kamu Luar Biasa!</h3>
+                        <p class="quiz-result-desc" id="quizResultDesc">Kamu berhasil menjawab semua pertanyaan tentang kisah kita!</p>
+                    </div>
+                    <div class="quiz-certificate">
+                        <div class="certificate-inner">
+                            <span class="cert-stamp">VERIFIED BY HASAN 💕</span>
+                            <h4 class="cert-title">Sertifikat Pasangan Paling Sempurna</h4>
+                            <p class="cert-name">Diberikan kepada: <strong>Ashley</strong> 💗</p>
+                            <p class="cert-text">Sebagai pemilik 100% hati Hasan hari ini, esok, dan selamanya.</p>
+                            <div class="cert-score-display" id="certScoreDisplay">Skor Akhir: 5 / 5 ❤️</div>
+                        </div>
+                    </div>
+                    <div class="quiz-result-actions">
+                        <button class="quiz-restart-btn" id="quizRestartBtn">Main Lagi 🔄</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ 7. HALAMAN KEJUTAN TERAKHIR (ONE LAST THING) ═══════════ -->
+        <section class="surprise-section" id="surprise">
+            <div class="surprise-banner-card">
+                <div class="surprise-sparkle-halo"></div>
+                <div class="surprise-gift-icon-bounce">🎁</div>
+                <h2 class="surprise-title">Ada Satu Pesan Terakhir Untukmu...</h2>
+                <p class="surprise-subtitle">Sebelum menutup website ini, ada sesuatu yang sangat ingin kukatakan secara tulus.</p>
+                <button class="surprise-trigger-btn" id="surpriseTriggerBtn">
+                    <span class="gift-btn-glow"></span>
+                    <span class="gift-btn-icon">🎁</span>
+                    <span class="gift-btn-text">One Last Thing…</span>
+                    <span class="gift-btn-heart">💗</span>
+                </button>
             </div>
         </section>
 
@@ -224,6 +497,56 @@
             <p class="footer-date">Sejak 26 September 2026 — Selamanya 💍</p>
         </footer>
     </main>
+
+    <!-- ═══════════ MODAL KEJUTAN TERAKHIR (SURPRISE MODAL) ═══════════ -->
+    <div class="surprise-modal-overlay" id="surpriseModal" role="dialog" aria-modal="true">
+        <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+        <div class="surprise-modal-container">
+            <button class="surprise-modal-close" id="surpriseCloseBtn" title="Tutup">&times;</button>
+            
+            <div class="surprise-card-inner">
+                <div class="surprise-top-deco">
+                    <span class="deco-heart d1">💖</span>
+                    <span class="deco-heart d2">✨</span>
+                    <span class="deco-heart d3">🌸</span>
+                </div>
+
+                <div class="surprise-unboxing-icon">
+                    <div class="gift-box-anim" id="giftBoxAnim">
+                        <div class="gift-lid"></div>
+                        <div class="gift-body">
+                            <span class="gift-ribbon"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="surprise-modal-heading">Ashley Sayangku... 💗</h3>
+                
+                <div class="surprise-modal-body">
+                    <p class="surprise-letter-line">
+                        Terima kasih sudah membaca dan melihat website kecil yang kubuat khusus untukmu ini.
+                    </p>
+                    <p class="surprise-letter-line highlight">
+                        Semua baris kata, foto, dan lagu di sini adalah caraku mengungkapkan bahwa hadirmu adalah anugerah terindah dalam hidupku.
+                    </p>
+                    <p class="surprise-letter-line">
+                        Apapun yang terjadi esok hari, ingatlah bahwa kamu punya Hasan yang akan selalu siap mendengarkan ceritamu, memelukmu saat kamu lelah, dan mencintaimu tanpa syarat.
+                    </p>
+                    <p class="surprise-letter-signature">
+                        I love you today, tomorrow, and forever. 💍💕<br>
+                        <strong>— Hasan</strong>
+                    </p>
+                </div>
+
+                <div class="surprise-modal-footer">
+                    <button class="virtual-hug-btn" id="virtualHugBtn">
+                        <span class="hug-icon">🤗</span>
+                        <span class="hug-text">Kirim Peluk Virtual untuk Hasan!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ═══════════ STICKY MUSIC PLAYER BAR ═══════════ -->
     <div class="music-player-bar" id="musicPlayerBar">

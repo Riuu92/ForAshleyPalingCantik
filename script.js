@@ -43,7 +43,7 @@ const PHOTOS = [
 // ║  Contoh (hapus // di depan untuk mengaktifkan):              ║
 // ╚══════════════════════════════════════════════════════════════╝
 const PLAYLIST = [
-    { title: 'Perfect (cover)', artist: 'Ed Sheeran', src: 'music/perfect.mp3' },
+    { title: 'Perfect (cover by @freecoustic)', artist: 'Ed Sheeran', src: 'music/perfect.mp3' },
     { title: 'Angel Baby (cover)', artist: 'Troye Sivan', src: 'music/angel_baby.mp3' },
     // { title: 'A Thousand Years', artist: 'Christina Perri', src: 'music/a-thousand-years.mp3' },
     { title: 'All of Me (cover)', artist: 'John Legend', src: 'music/all-of-me.mp3' },
@@ -250,7 +250,7 @@ function nextQuote() {
 // ── Scroll Reveal ──────────────────────────────
 function initScrollReveal() {
     const sections = document.querySelectorAll(
-        '.timer-section, .love-section, .milestones-section, .quotes-section, .gallery-section, .video-section, .playlist-section'
+        '.timer-section, .countdown-section, .love-section, .milestones-section, .quotes-section, .gallery-section, .video-section, .playlist-section, .quiz-section, .surprise-section'
     );
 
     const observer = new IntersectionObserver((entries) => {
@@ -364,30 +364,140 @@ function initCursorTrail() {
 // ═══════════════════════════════════════════════════════════════
 let currentLightboxIndex = 0;
 
+// Scrapbook cards and photos
+const SCRAPBOOK_MEMORIES = [
+    {
+        type: 'photo',
+        src: 'photos/foto1.jpg',
+        caption: 'Kesayanganku',
+        date: '26 Sep 2026',
+        sticker: '💖',
+        stickerPos: 's-br',
+        tilt: -2.5
+    },
+    {
+        type: 'card',
+        icon: '🌹',
+        caption: 'Awal Kisah Kita',
+        quote: 'Hari terbaik dalam hidup Hasan ketika kamu bilang "iya" 💕',
+        date: '26 September 2026',
+        sticker: '✨',
+        stickerPos: 's-tl',
+        tilt: 3.2
+    },
+    {
+        type: 'card',
+        icon: '🎶',
+        caption: 'Lagu Cinta Berdua',
+        quote: '"Darling just hold my hand, be my girl, I will be your man..."',
+        date: 'Ed Sheeran - Perfect',
+        sticker: '🎀',
+        stickerPos: 's-br',
+        tilt: -1.8
+    },
+    {
+        type: 'card',
+        icon: '☕',
+        caption: 'Momen Manis Bareng',
+        quote: 'Setiap obrolan sederhana selalu terasa sangat berharga saat bersamamu.',
+        date: 'Setiap Waktu',
+        sticker: '🌸',
+        stickerPos: 's-tl',
+        tilt: 2.2
+    },
+    {
+        type: 'card',
+        icon: '🥰',
+        caption: 'Senyuman Manismu',
+        quote: 'Alasan nomor satu kenapa hariku selalu penuh semangat dan tawa.',
+        date: 'Untuk Ashley',
+        sticker: '🍓',
+        stickerPos: 's-br',
+        tilt: -3
+    },
+    {
+        type: 'card',
+        icon: '💍',
+        caption: 'Janji Selamanya',
+        quote: 'Menua bersamamu adalah impian terindah yang sedang kujalani sekarang.',
+        date: 'Selamanya 💎',
+        sticker: '💌',
+        stickerPos: 's-tl',
+        tilt: 1.5
+    }
+];
+
 function initGallery() {
     const grid = document.getElementById('galleryGrid');
-
-    if (PHOTOS.length === 0) {
-        grid.innerHTML = `
-            <div class="gallery-empty">
-                <div class="gallery-empty-icon">📸</div>
-                <p class="gallery-empty-text">Belum ada foto kenangan...</p>
-                <p class="gallery-empty-hint">Taruh foto di folder photos/ lalu daftarkan di script.js</p>
-            </div>
-        `;
-        return;
-    }
+    if (!grid) return;
 
     grid.innerHTML = '';
-    PHOTOS.forEach((photo, index) => {
-        const item = document.createElement('div');
-        item.classList.add('gallery-item');
-        item.innerHTML = `
-            <img src="${photo.src}" alt="${photo.caption || 'Foto kenangan'}" loading="lazy">
-            ${photo.caption ? `<div class="gallery-overlay"><span class="gallery-overlay-text">${photo.caption}</span></div>` : ''}
-        `;
-        item.addEventListener('click', () => openLightbox(index));
-        grid.appendChild(item);
+
+    // Build items list: include any custom photos from PHOTOS array plus our memories cards
+    const itemsToRender = [];
+    
+    // Check if PHOTOS has items not yet in SCRAPBOOK_MEMORIES
+    PHOTOS.forEach((photo, idx) => {
+        itemsToRender.push({
+            type: 'photo',
+            src: photo.src,
+            caption: photo.caption || 'Foto Kenangan',
+            date: 'Momen Spesial',
+            sticker: ['💖', '🌸', '✨', '🎀'][idx % 4],
+            stickerPos: idx % 2 === 0 ? 's-br' : 's-tl',
+            tilt: ((idx * 2.5) % 6) - 3,
+            photoIndex: idx
+        });
+    });
+
+    // Add illustrative cards
+    SCRAPBOOK_MEMORIES.forEach((item) => {
+        if (item.type === 'card') {
+            itemsToRender.push(item);
+        }
+    });
+
+    itemsToRender.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.classList.add('polaroid-card');
+        card.style.setProperty('--tilt', `${item.tilt || 0}deg`);
+
+        if (item.type === 'photo') {
+            card.innerHTML = `
+                <div class="polaroid-tape"></div>
+                <div class="polaroid-image-wrap">
+                    <img src="${item.src}" alt="${item.caption}" loading="lazy">
+                </div>
+                <p class="polaroid-caption">${item.caption}</p>
+                <span class="polaroid-date">${item.date || ''}</span>
+                <span class="polaroid-sticker ${item.stickerPos || 's-br'}">${item.sticker || '💖'}</span>
+            `;
+            card.addEventListener('click', () => {
+                openLightbox(item.photoIndex !== undefined ? item.photoIndex : 0);
+            });
+        } else {
+            card.innerHTML = `
+                <div class="polaroid-tape"></div>
+                <div class="polaroid-image-wrap">
+                    <div class="scrapbook-illust-wrap">
+                        <span class="scrapbook-illust-icon">${item.icon || '💌'}</span>
+                        <p class="scrapbook-illust-quote">${item.quote || ''}</p>
+                    </div>
+                </div>
+                <p class="polaroid-caption">${item.caption}</p>
+                <span class="polaroid-date">${item.date || ''}</span>
+                <span class="polaroid-sticker ${item.stickerPos || 's-tl'}">${item.sticker || '🌸'}</span>
+            `;
+            card.addEventListener('click', () => {
+                // Flash / pop animation
+                card.style.transform = 'scale(1.08) rotate(0deg)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 300);
+            });
+        }
+
+        grid.appendChild(card);
     });
 }
 
@@ -536,17 +646,78 @@ function playNext() {
     playSong(next);
 }
 
+let noteInterval = null;
+
+function syncTurntableUI() {
+    const vinylDisc = document.getElementById('vinylDisc');
+    const tonearm = document.getElementById('turntableTonearm');
+    const statusTag = document.getElementById('turntableStatusTag');
+    const ttPlayIcon = document.querySelector('#ttPlayPauseBtn .tt-icon-play');
+    const ttPauseIcon = document.querySelector('#ttPlayPauseBtn .tt-icon-pause');
+    const songTitle = document.getElementById('turntableSongTitle');
+    const songArtist = document.getElementById('turntableSongArtist');
+    const vinylCenterTitle = document.getElementById('vinylCenterTitle');
+
+    if (currentSongIndex >= 0 && currentSongIndex < PLAYLIST.length) {
+        const currentSong = PLAYLIST[currentSongIndex];
+        if (songTitle) songTitle.textContent = currentSong.title;
+        if (songArtist) songArtist.textContent = currentSong.artist || 'Hasan & Ashley';
+        if (vinylCenterTitle) vinylCenterTitle.textContent = currentSong.title;
+    }
+
+    if (isPlaying) {
+        if (vinylDisc) vinylDisc.classList.add('spinning');
+        if (tonearm) tonearm.classList.add('playing');
+        if (statusTag) statusTag.textContent = 'Sedang Berputar 🎶';
+        if (ttPlayIcon) ttPlayIcon.style.display = 'none';
+        if (ttPauseIcon) ttPauseIcon.style.display = 'block';
+
+        if (!noteInterval) {
+            noteInterval = setInterval(spawnTurntableNote, 900);
+        }
+    } else {
+        if (vinylDisc) vinylDisc.classList.remove('spinning');
+        if (tonearm) tonearm.classList.remove('playing');
+        if (statusTag) statusTag.textContent = 'Siap Diputar 💿';
+        if (ttPlayIcon) ttPlayIcon.style.display = 'block';
+        if (ttPauseIcon) ttPauseIcon.style.display = 'none';
+
+        if (noteInterval) {
+            clearInterval(noteInterval);
+            noteInterval = null;
+        }
+    }
+}
+
+function spawnTurntableNote() {
+    const notesContainer = document.getElementById('turntableNotes');
+    if (!notesContainer || !isPlaying) return;
+    const note = document.createElement('span');
+    note.classList.add('music-note-float');
+    const notes = ['♪', '♫', '♬', '♩', '💖', '✨'];
+    note.textContent = notes[Math.floor(Math.random() * notes.length)];
+    const startX = 60 + Math.random() * 80;
+    const startY = 60 + Math.random() * 70;
+    note.style.left = `${startX}px`;
+    note.style.top = `${startY}px`;
+    note.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+    note.style.setProperty('--dr', `${(Math.random() - 0.5) * 45}deg`);
+    notesContainer.appendChild(note);
+    setTimeout(() => note.remove(), 2500);
+}
+
 function updatePlayPauseUI() {
     const playIcon = document.querySelector('#playerPlayPause .play-icon');
     const pauseIcon = document.querySelector('#playerPlayPause .pause-icon');
 
     if (isPlaying) {
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        if (playIcon) playIcon.style.display = 'none';
+        if (pauseIcon) pauseIcon.style.display = 'block';
     } else {
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
+        if (playIcon) playIcon.style.display = 'block';
+        if (pauseIcon) pauseIcon.style.display = 'none';
     }
+    syncTurntableUI();
 }
 
 function updatePlaylistActiveState() {
@@ -560,8 +731,11 @@ function updatePlaylistActiveState() {
 function updatePlayerBarInfo() {
     if (currentSongIndex < 0 || currentSongIndex >= PLAYLIST.length) return;
     const song = PLAYLIST[currentSongIndex];
-    document.getElementById('playerSongTitle').textContent = song.title;
-    document.getElementById('playerSongArtist').textContent = song.artist || '';
+    const playerSongTitle = document.getElementById('playerSongTitle');
+    const playerSongArtist = document.getElementById('playerSongArtist');
+    if (playerSongTitle) playerSongTitle.textContent = song.title;
+    if (playerSongArtist) playerSongArtist.textContent = song.artist || '';
+    syncTurntableUI();
 }
 
 function formatTime(seconds) {
@@ -569,6 +743,42 @@ function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+function initTurntablePlayer() {
+    const playPauseBtn = document.getElementById('ttPlayPauseBtn');
+    const prevBtn = document.getElementById('ttPrevBtn');
+    const nextBtn = document.getElementById('ttNextBtn');
+    const progressTrack = document.getElementById('ttProgressTrack');
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePlayPause();
+        });
+    }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playPrev();
+        });
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playNext();
+        });
+    }
+    if (progressTrack) {
+        progressTrack.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!audioPlayer || !audioPlayer.duration) return;
+            const rect = progressTrack.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, x / rect.width));
+            audioPlayer.currentTime = pct * audioPlayer.duration;
+        });
+    }
 }
 
 function initMusicPlayer() {
@@ -628,18 +838,32 @@ function initMusicPlayer() {
     audioPlayer.addEventListener('timeupdate', () => {
         if (!audioPlayer.duration) return;
         const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        document.getElementById('playerProgressFill').style.width = pct + '%';
-        document.getElementById('playerCurrentTime').textContent = formatTime(audioPlayer.currentTime);
+        const curFormatted = formatTime(audioPlayer.currentTime);
+        
+        const playerProgressFill = document.getElementById('playerProgressFill');
+        const playerCurrentTime = document.getElementById('playerCurrentTime');
+        const ttProgressBar = document.getElementById('ttProgressBar');
+        const ttCurrentTime = document.getElementById('ttCurrentTime');
+
+        if (playerProgressFill) playerProgressFill.style.width = pct + '%';
+        if (playerCurrentTime) playerCurrentTime.textContent = curFormatted;
+        if (ttProgressBar) ttProgressBar.style.width = pct + '%';
+        if (ttCurrentTime) ttCurrentTime.textContent = curFormatted;
     });
 
     // Duration loaded
     audioPlayer.addEventListener('loadedmetadata', () => {
-        document.getElementById('playerDuration').textContent = formatTime(audioPlayer.duration);
+        const durFormatted = formatTime(audioPlayer.duration);
+        const playerDuration = document.getElementById('playerDuration');
+        const ttDuration = document.getElementById('ttDuration');
+
+        if (playerDuration) playerDuration.textContent = durFormatted;
+        if (ttDuration) ttDuration.textContent = durFormatted;
 
         // Also update the playlist item duration
         if (currentSongIndex >= 0) {
             const durEl = document.getElementById('duration-' + currentSongIndex);
-            if (durEl) durEl.textContent = formatTime(audioPlayer.duration);
+            if (durEl) durEl.textContent = durFormatted;
         }
     });
 
@@ -663,6 +887,9 @@ function initMusicPlayer() {
         updatePlayPauseUI();
         updatePlaylistActiveState();
     });
+
+    // Init Turntable events
+    initTurntablePlayer();
 }
 
 
@@ -806,6 +1033,508 @@ function setTheme(theme) {
 }
 
 
+// ═══════════════════════════════════════════════════════════════
+//  3. FALLING PETALS (KELOPAK BUNGA JATUH PERLAHAN)
+// ═══════════════════════════════════════════════════════════════
+function initFallingPetals() {
+    const container = document.getElementById('fallingPetals');
+    if (!container) return;
+
+    const PETAL_EMOJIS = ['🌸', '💮', '🏵️', '🌺'];
+    const petalCount = window.innerWidth < 600 ? 10 : 16;
+
+    for (let i = 0; i < petalCount; i++) {
+        const petal = document.createElement('span');
+        petal.classList.add('petal');
+        petal.textContent = PETAL_EMOJIS[Math.floor(Math.random() * PETAL_EMOJIS.length)];
+
+        const left = Math.random() * 100;
+        const size = 0.8 + Math.random() * 1.1; // rem
+        const duration = 8 + Math.random() * 10; // seconds
+        const delay = Math.random() * 12; // seconds
+        const drift = (Math.random() - 0.5) * 160; // px
+        const rot = 180 + Math.random() * 360; // deg
+
+        petal.style.cssText = `
+            left: ${left}%;
+            font-size: ${size}rem;
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+            --drift-x: ${drift}px;
+            --rot: ${rot}deg;
+        `;
+        container.appendChild(petal);
+    }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  6. HITUNG MUNDUR HARI SPESIAL (SPECIAL COUNTDOWN)
+// ═══════════════════════════════════════════════════════════════
+let currentCountdownTarget = new Date('2026-10-26T00:00:00+08:00');
+let countdownTimerId = null;
+
+function updateSpecialCountdown() {
+    const now = new Date();
+    const diff = currentCountdownTarget - now;
+
+    const daysEl = document.getElementById('cdDays');
+    const hoursEl = document.getElementById('cdHours');
+    const minsEl = document.getElementById('cdMinutes');
+    const secsEl = document.getElementById('cdSeconds');
+
+    if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+    if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
+        return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    daysEl.textContent = String(days).padStart(2, '0');
+    hoursEl.textContent = String(hours).padStart(2, '0');
+    minsEl.textContent = String(minutes).padStart(2, '0');
+    secsEl.textContent = String(seconds).padStart(2, '0');
+}
+
+function initSpecialCountdown() {
+    const tabs = document.querySelectorAll('.countdown-tab');
+    const eventTitle = document.getElementById('countdownEventTitle');
+    const messageEl = document.getElementById('countdownMessage');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const targetStr = tab.dataset.target;
+            const title = tab.dataset.title;
+            const msg = tab.dataset.msg;
+
+            if (targetStr) currentCountdownTarget = new Date(targetStr);
+            if (eventTitle && title) eventTitle.textContent = `Menuju ${title}`;
+            if (messageEl && msg) messageEl.textContent = msg;
+
+            updateSpecialCountdown();
+        });
+    });
+
+    updateSpecialCountdown();
+    countdownTimerId = setInterval(updateSpecialCountdown, 1000);
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  1. AMPLOP SURAT INTERAKTIF (INTERACTIVE ENVELOPE)
+// ═══════════════════════════════════════════════════════════════
+function initEnvelope() {
+    const envelopeBox = document.getElementById('envelopeBox');
+    const openBtn = document.getElementById('openLetterBtn');
+    const btnText = document.getElementById('openLetterBtnText');
+    const waxSeal = document.getElementById('waxSeal');
+
+    if (!envelopeBox || !openBtn) return;
+
+    const envelopeContainer = document.getElementById('envelopeContainer');
+
+    function toggleEnvelope() {
+        const isOpen = envelopeBox.classList.toggle('open');
+        if (envelopeContainer) {
+            envelopeContainer.classList.toggle('is-open', isOpen);
+        }
+        if (btnText) {
+            btnText.textContent = isOpen ? 'Tutup Surat (Close Letter)' : 'Open Letter (Buka Surat)';
+        }
+
+        if (isOpen) {
+            // Smoothly center the envelope into view
+            setTimeout(() => {
+                envelopeBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 250);
+
+            // Burst sweet sparkle hearts
+            const rect = envelopeBox.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 3;
+
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement('span');
+                    spark.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+                    spark.style.cssText = `
+                        position: fixed;
+                        left: ${centerX}px;
+                        top: ${centerY}px;
+                        pointer-events: none;
+                        font-size: ${0.9 + Math.random() * 0.9}rem;
+                        z-index: 9999;
+                        animation: clickSparkle 1.2s ease-out forwards;
+                        --tx: ${(Math.random() - 0.5) * 160}px;
+                        --ty: ${-40 - Math.random() * 100}px;
+                    `;
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 1200);
+                }, i * 40);
+            }
+        }
+    }
+
+    openBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleEnvelope();
+    });
+
+    if (waxSeal) {
+        waxSeal.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleEnvelope();
+        });
+    }
+
+    envelopeBox.addEventListener('click', (e) => {
+        // Only toggle if clicking outside the paper text while open
+        if (!e.target.closest('.envelope-letter')) {
+            toggleEnvelope();
+        }
+    });
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  5. MINI KUIS KHUSUS ASHLEY (INTERACTIVE LOVE QUIZ)
+// ═══════════════════════════════════════════════════════════════
+const QUIZ_QUESTIONS = [
+    {
+        icon: "💍",
+        question: "Kapan tanggal jadian resmi kita berdua?",
+        options: [
+            "26 September 2026",
+            "14 Februari 2026",
+            "1 Januari 2026",
+            "26 Oktober 2026"
+        ],
+        correct: 0,
+        explanation: "Benar sekali! 26 September 2026 adalah hari terbaik Hasan 💕"
+    },
+    {
+        icon: "🥰",
+        question: "Apa hal paling menggemaskan dari Ashley menurut Hasan?",
+        options: [
+            "Waktu Ashley ketawa lepas",
+            "Waktu Ashley lagi ngambek tapi tetep imut",
+            "Waktu Ashley perhatian dan nanyain kabar",
+            "Semua hal tentang Ashley tanpa terkecuali! 💖"
+        ],
+        correct: 3,
+        explanation: "1000% betul! Segala hal tentang Ashley selalu bikin Hasan jatuh cinta lagi dan lagi!"
+    },
+    {
+        icon: "🍕",
+        question: "Kalau Ashley lagi laper tapi bingung mau makan apa, jurus paling ampuh Hasan?",
+        options: [
+            "Biarin aja sampai nemu sendiri",
+            "Sebutin 10 rekomendasi makanan & siap pesanin kesukaannya",
+            "Suruh minum air putih banyak-banyak",
+            "Ditinggal tidur"
+        ],
+        correct: 1,
+        explanation: "Tentu dong! Siap melayani dan manjain perut tuan putri kesayangan!"
+    },
+    {
+        icon: "🎵",
+        question: "Lagu apa yang paling mewakili perasaan Hasan ke Ashley?",
+        options: [
+            "Ed Sheeran - Perfect",
+            "Troye Sivan - Angel Baby",
+            "Al-Ghazali - Kesayanganku",
+            "Semua lagu cinta di semesta ini 🎶"
+        ],
+        correct: 3,
+        explanation: "Yup! Semua lirik lagu cinta di dunia ini terasa seperti menceritakan Ashley!"
+    },
+    {
+        icon: "👑",
+        question: "Seberapa besar cinta Hasan buat Ashley hari ini dan selamanya?",
+        options: [
+            "Seluas samudera",
+            "Setinggi bintang di langit",
+            "Tak terhingga dan tak terhitung",
+            "Lebih dari seluruh alam semesta ✨"
+        ],
+        correct: 3,
+        explanation: "Bingo! Cinta Hasan ke Ashley melampaui seluruh bintang dan galaksi di semesta! 💕"
+    }
+];
+
+let currentQuizIndex = 0;
+let quizScore = 0;
+let answered = false;
+
+function initQuiz() {
+    const quizCard = document.getElementById('quizCard');
+    const resultCard = document.getElementById('quizResultCard');
+    const nextBtn = document.getElementById('quizNextBtn');
+    const restartBtn = document.getElementById('quizRestartBtn');
+
+    if (!quizCard) return;
+
+    renderQuizQuestion();
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentQuizIndex++;
+            if (currentQuizIndex < QUIZ_QUESTIONS.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        });
+    }
+
+    if (restartBtn) {
+        restartBtn.addEventListener('click', () => {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizCard.style.display = 'block';
+            resultCard.style.display = 'none';
+            renderQuizQuestion();
+        });
+    }
+}
+
+function renderQuizQuestion() {
+    answered = false;
+    const q = QUIZ_QUESTIONS[currentQuizIndex];
+    const total = QUIZ_QUESTIONS.length;
+
+    document.getElementById('quizStepBadge').textContent = `Pertanyaan ${currentQuizIndex + 1} dari ${total}`;
+    document.getElementById('quizScoreBadge').textContent = `Skor: ${quizScore} 💕`;
+    document.getElementById('quizProgressFill').style.width = `${((currentQuizIndex + 1) / total) * 100}%`;
+
+    document.getElementById('quizQuestionIcon').textContent = q.icon;
+    document.getElementById('quizQuestionTitle').textContent = q.question;
+
+    const feedback = document.getElementById('quizFeedback');
+    feedback.className = 'quiz-feedback';
+    feedback.style.display = 'none';
+
+    const nextBtn = document.getElementById('quizNextBtn');
+    nextBtn.style.display = 'none';
+    if (currentQuizIndex === total - 1) {
+        nextBtn.textContent = 'Lihat Hasil Kejutan 🏆';
+    } else {
+        nextBtn.textContent = 'Pertanyaan Selanjutnya ➔';
+    }
+
+    const optionsList = document.getElementById('quizOptionsList');
+    optionsList.innerHTML = '';
+
+    const letters = ['A', 'B', 'C', 'D'];
+    q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.classList.add('quiz-option-btn');
+        btn.innerHTML = `
+            <span class="quiz-option-letter">${letters[optIdx]}</span>
+            <span class="quiz-option-text">${optText}</span>
+        `;
+        btn.addEventListener('click', () => handleQuizAnswer(optIdx, btn));
+        optionsList.appendChild(btn);
+    });
+}
+
+function handleQuizAnswer(selectedIndex, selectedBtn) {
+    if (answered) return;
+    answered = true;
+
+    const q = QUIZ_QUESTIONS[currentQuizIndex];
+    const optionBtns = document.querySelectorAll('.quiz-option-btn');
+    const feedback = document.getElementById('quizFeedback');
+    const nextBtn = document.getElementById('quizNextBtn');
+
+    optionBtns.forEach(btn => btn.disabled = true);
+
+    if (selectedIndex === q.correct) {
+        quizScore++;
+        selectedBtn.classList.add('correct');
+        feedback.textContent = `✨ ${q.explanation}`;
+        feedback.className = 'quiz-feedback show-correct';
+        feedback.style.display = 'block';
+    } else {
+        selectedBtn.classList.add('wrong');
+        optionBtns[q.correct].classList.add('correct');
+        feedback.textContent = `Jawaban yang paling pas: ${q.options[q.correct]}. ${q.explanation}`;
+        feedback.className = 'quiz-feedback show-wrong';
+        feedback.style.display = 'block';
+    }
+
+    document.getElementById('quizScoreBadge').textContent = `Skor: ${quizScore} 💕`;
+    nextBtn.style.display = 'inline-block';
+}
+
+function showQuizResult() {
+    const quizCard = document.getElementById('quizCard');
+    const resultCard = document.getElementById('quizResultCard');
+    const certScore = document.getElementById('certScoreDisplay');
+    const desc = document.getElementById('quizResultDesc');
+
+    quizCard.style.display = 'none';
+    resultCard.style.display = 'block';
+
+    certScore.textContent = `Skor Akhir: ${quizScore} / ${QUIZ_QUESTIONS.length} ❤️`;
+
+    if (quizScore === QUIZ_QUESTIONS.length) {
+        desc.textContent = "Sempurna! Kamu adalah wanita paling mengerti dan paling dicintai Hasan seumur hidup!";
+    } else {
+        desc.textContent = "Hebat banget! Apapun skornya, Ashley tetap juara satu di hati Hasan selamanya 💕";
+    }
+
+    triggerConfetti();
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  7. HALAMAN KEJUTAN TERAKHIR (ONE LAST THING & CONFETTI)
+// ═══════════════════════════════════════════════════════════════
+let confettiAnimationId = null;
+
+function triggerConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const pieces = [];
+    const colors = ['#ff6b9d', '#ff4b72', '#ffd700', '#c44569', '#d6bcfa', '#ffffff'];
+
+    for (let i = 0; i < 90; i++) {
+        pieces.push({
+            x: Math.random() * canvas.width,
+            y: -20 - Math.random() * 100,
+            size: 6 + Math.random() * 8,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            speedY: 2 + Math.random() * 4,
+            speedX: (Math.random() - 0.5) * 3,
+            rot: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 8,
+            isHeart: Math.random() > 0.6
+        });
+    }
+
+    if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId);
+
+    function renderConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rot += p.rotSpeed;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rot * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+
+            if (p.isHeart) {
+                ctx.font = `${p.size + 4}px sans-serif`;
+                ctx.fillText('💖', -p.size / 2, p.size / 2);
+            } else {
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.4);
+            }
+            ctx.restore();
+        });
+
+        const activePieces = pieces.filter(p => p.y < canvas.height + 50);
+        if (activePieces.length > 0) {
+            confettiAnimationId = requestAnimationFrame(renderConfetti);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    renderConfetti();
+}
+
+function initSurpriseModal() {
+    const triggerBtn = document.getElementById('surpriseTriggerBtn');
+    const modal = document.getElementById('surpriseModal');
+    const closeBtn = document.getElementById('surpriseCloseBtn');
+    const virtualHugBtn = document.getElementById('virtualHugBtn');
+
+    if (!triggerBtn || !modal) return;
+
+    function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(triggerConfetti, 100);
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId);
+    }
+
+    triggerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal();
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    if (virtualHugBtn) {
+        virtualHugBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            virtualHugBtn.innerHTML = `<span>Peluk Hangat Terkirim! 🥰🫂</span>`;
+            virtualHugBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('span');
+                    heart.textContent = ['🫂', '💖', '🥰', '🌸', '✨', '💕'][Math.floor(Math.random() * 6)];
+                    heart.style.cssText = `
+                        position: fixed;
+                        left: ${10 + Math.random() * 80}vw;
+                        bottom: -30px;
+                        font-size: ${1.5 + Math.random() * 1.5}rem;
+                        z-index: 100000;
+                        pointer-events: none;
+                        animation: floatHeart 3s ease-out forwards;
+                    `;
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 70);
+            }
+
+            setTimeout(() => {
+                virtualHugBtn.innerHTML = `<span class="hug-icon">🤗</span><span class="hug-text">Kirim Peluk Lagi!</span>`;
+                virtualHugBtn.style.background = '';
+            }, 3500);
+        });
+    }
+}
+
+
 // ── Initialize Everything ──────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     // Theme switcher (init first so theme applies immediately)
@@ -815,16 +1544,23 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTimer();
     setInterval(updateTimer, 1000);
 
-    // Visual effects
+    // 6. Special countdown
+    initSpecialCountdown();
+
+    // Visual effects (Hearts, Sparkles, Falling Petals, Quotes)
     initFloatingHearts();
     initSparkles();
+    initFallingPetals();
     initQuotes();
     initScrollReveal();
     initScrollTop();
     initClickEffect();
     initCursorTrail();
 
-    // Photo Gallery
+    // 1. Amplop surat interaktif
+    initEnvelope();
+
+    // 2. Scrapbook Polaroid Gallery
     initGallery();
     initLightbox();
 
@@ -832,7 +1568,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initVideoGallery();
     initVideoLightbox();
 
-    // Music Player
+    // 4. Music Player & Vinyl Turntable
     initPlaylist();
     initMusicPlayer();
+
+    // 5. Mini Kuis khusus Ashley
+    initQuiz();
+
+    // 7. Halaman Kejutan Terakhir
+    initSurpriseModal();
 });
+
